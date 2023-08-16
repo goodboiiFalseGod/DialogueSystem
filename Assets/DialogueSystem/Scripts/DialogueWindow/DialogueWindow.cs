@@ -74,6 +74,11 @@ public class DialogueWindow : MonoBehaviour
         _rectTransform.DOScale(1, 0.3f);
 
         _player.ToggleMovement(false);
+
+        if (actor.FirstSpeechDone) return;
+
+        actor.FirstSpeechDone = true;
+        StartCoroutine(ShowAnswer(npcDialogueData.FirstPhrase));
     }
 
     private void AssignQuestions(QuestionAnswerPair[] questionAnswerPairs)
@@ -113,7 +118,7 @@ public class DialogueWindow : MonoBehaviour
         do
         {
             i++;
-            yield return new WaitUntil(() => Input.GetKeyUp(KeyCode.Space));
+            yield return new WaitUntil(() => (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0)));
 
             if (i != answers.Length)
             {
@@ -125,6 +130,25 @@ public class DialogueWindow : MonoBehaviour
             yield return null;
 
         } while (i < answers.Length);
+
+        _questionsSection.SetActive(true);
+        _answerText.gameObject.SetActive(false);
+    }
+
+    public IEnumerator ShowAnswer(TextAudioPair answer)
+    {
+        _questionsSection.SetActive(false);
+        _answerText.gameObject.SetActive(true);
+
+        _answerText.text = answer.TextLine;
+        _currentActor.AudioSource.clip = answer.VoiceLine;
+        _currentActor.AudioSource.Play();
+
+        while(true)
+        {
+            yield return new WaitUntil(() => (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0)));
+            break;
+        }
 
         _questionsSection.SetActive(true);
         _answerText.gameObject.SetActive(false);

@@ -5,14 +5,14 @@ using UnityEngine;
 public class DialogueData : ScriptableObject
 {
     [SerializeField] public string NPCName;
-    [SerializeField] public string AlternativeNPCName;
 
     [SerializeField] public QuestionAnswerPair[] Answers;
+
+    [SerializeField] public TextAudioPair FirstPhrase;
 
     [Serializable]
     public class QuestionAnswerPair
     {
-        [SerializeField] public bool OneTimeQuestion = false;
         [SerializeField] public string Question;
         [SerializeField] public TextAudioPair[] Answer;
     }
