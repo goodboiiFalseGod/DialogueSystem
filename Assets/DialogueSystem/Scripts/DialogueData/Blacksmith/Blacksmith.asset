@@ -12,6 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 222c0f360d980154c8d64b3d31702347, type: 3}
   m_Name: Blacksmith
   m_EditorClassIdentifier: 
-  NPCName: 
-  AlternativeNPCName: 
-  Answers: []
+  NPCName: Blacksmith
+  Answers:
+  - Question: Hello, what is this place?
+    Answer:
+    - TextLine: '"Last light" tavern.'
+      VoiceLine: {fileID: 8300000, guid: aae729f2783bc7e45a48ca58ed76dfb9, type: 3}
+    - TextLine: Deepest hole of the world.
+      VoiceLine: {fileID: 8300000, guid: 02a3ea7a1b749fe48a9ed6fec1f49cf2, type: 3}
+  - Question: Tell me about yourself.
+    Answer:
+    - TextLine: Jerry.
+      VoiceLine: {fileID: 8300000, guid: 42e35dfcffaa1a74f9f91bb7a5f25db3, type: 3}
+    - TextLine: The blacksmith.
+      VoiceLine: {fileID: 8300000, guid: e261e59f1b7b5074e933f044466f8033, type: 3}
+  - Question: So, are stangers often here?
+    Answer:
+    - TextLine: You first for the month.
+      VoiceLine: {fileID: 8300000, guid: b77f5b7f7b177734f88f20c89089f829, type: 3}
+  FirstPhrase:
+    TextLine: Hello there.
+    VoiceLine: {fileID: 8300000, guid: 4a1821883d3f4ec47860c187e8cb01ee, type: 3}

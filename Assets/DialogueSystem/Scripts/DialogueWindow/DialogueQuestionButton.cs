@@ -11,6 +11,8 @@ public class DialogueQuestionButton : MonoBehaviour
     private DialogueWindow _dialogueWindow;
     private QuestionAnswerPair _currentPair;
 
+    private int _number;
+
     public void Init(DialogueWindow dialogueWindow)
     {
         _dialogueWindow = dialogueWindow;
@@ -19,6 +21,7 @@ public class DialogueQuestionButton : MonoBehaviour
 
     public void AssignQuestionAnswerPair(QuestionAnswerPair questionAnswer, int number)
     {
+        _number = number;
         _currentPair = questionAnswer;
         _questionText.text = number.ToString() + ". " + _currentPair.Question;
     }
@@ -26,5 +29,13 @@ public class DialogueQuestionButton : MonoBehaviour
     private void OnClick()
     {
         _dialogueWindow.QuestionClicked(_currentPair);
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha0 + _number))
+        {
+            OnClick();
+        }
     }
 }

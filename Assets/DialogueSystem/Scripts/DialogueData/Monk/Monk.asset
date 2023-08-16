@@ -13,22 +13,21 @@ MonoBehaviour:
   m_Name: Monk
   m_EditorClassIdentifier: 
   NPCName: Monk
-  AlternativeNPCName: Albert
   Answers:
-  - OneTimeQuestion: 0
-    Question: Where am I?
+  - Question: Where am I?
     Answer:
     - TextLine: '"Last light" tavern. You''re welcome!'
       VoiceLine: {fileID: 8300000, guid: cac1d8600589a254a88edf2323a04d12, type: 3}
-  - OneTimeQuestion: 0
-    Question: Who you are?
+  - Question: Who you are?
     Answer:
     - TextLine: My name is Albert.
       VoiceLine: {fileID: 8300000, guid: bfb71a2ef80d6c8448dd4f63af30a8b9, type: 3}
     - TextLine: I'm novice of nearby church.
       VoiceLine: {fileID: 8300000, guid: e665bb9704bb7164faf1382f8b3bf0f5, type: 3}
-  - OneTimeQuestion: 0
-    Question: Could you tell something about that blacksmith?
+  - Question: Could you tell something about that blacksmith?
     Answer:
     - TextLine: Ask him by yourself if you want.
       VoiceLine: {fileID: 8300000, guid: 642f137c30f8c7c4caf6c920da0c0b23, type: 3}
+  FirstPhrase:
+    TextLine: Hello there.
+    VoiceLine: {fileID: 8300000, guid: 8fe083a586db44a42be60ca0b9824b39, type: 3}
