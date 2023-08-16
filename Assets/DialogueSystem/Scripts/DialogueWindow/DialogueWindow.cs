@@ -26,9 +26,9 @@ public class DialogueWindow : MonoBehaviour
 
     private List<DialogueQuestionButton> _dialogueQuestionsButtons;
     private InteractableActor _currentActor;
+    private static DialogueWindow _dialogueWindowInstance;
 
     public static DialogueWindow Instance => _dialogueWindowInstance;
-    private static DialogueWindow _dialogueWindowInstance;
 
     // Start is called before the first frame update
 
@@ -44,6 +44,12 @@ public class DialogueWindow : MonoBehaviour
         }
 
         _exitButton.onClick.AddListener(() => Hide(0.2f));
+    }
+
+    private void Update()
+    {
+        if (!Input.GetKeyDown(KeyCode.Escape)) return;
+        Hide(0.2f);
     }
 
     public void Hide(float time)
