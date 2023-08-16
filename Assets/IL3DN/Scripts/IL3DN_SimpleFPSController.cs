@@ -21,6 +21,7 @@ namespace IL3DN
         [SerializeField] private AudioClip m_JumpSound = default;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound = default;           // the sound played when character touches back on ground.
 
+        private bool m_LockMovement = false;
         private Camera m_Camera;
         private bool m_Jump;
         private float m_YRotation;
@@ -54,6 +55,8 @@ namespace IL3DN
 
         private void Update()
         {
+            if (m_LockMovement) return;
+
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
@@ -73,6 +76,22 @@ namespace IL3DN
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+        }
+
+        public void ToggleMovement(bool value)
+        {
+            m_LockMovement  = !value;
+
+            if (value)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            else if (!value)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
         }
 
         /// <summary>
@@ -97,6 +116,8 @@ namespace IL3DN
         /// </summary>
         private void FixedUpdate()
         {
+            if (m_LockMovement) return;
+
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at
