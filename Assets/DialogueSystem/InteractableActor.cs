@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class InteractableActor : MonoBehaviour
 {
     [SerializeField] private bool _rotatesToPlayer;
     [SerializeField] private Animator _actorAnimator;
+    [SerializeField] private Camera _dialogueCamera;
+    private Camera _previousCamera;
 
     private static int _rotationHash = Animator.StringToHash("Rotation");
     private static int _dialogueIdleHash = Animator.StringToHash("DialogueIdle");
 
     private Quaternion _initialRotation;
 
-    private void Start()
+    private void Awake()
     {
+        _dialogueCamera.gameObject.SetActive(false);
         _initialRotation = transform.rotation;
     }
 
@@ -28,33 +32,25 @@ public class InteractableActor : MonoBehaviour
         Vector3 targetPos = new Vector3(playerTransform.position.x, 0, playerTransform.position.z);
         Vector3 current = new Vector3(transform.position.x, 0, transform.position.z);
         Vector3 toPlayerDirection = targetPos - current;
+        Vector3 rotation = Quaternion.LookRotation(toPlayerDirection).eulerAngles;
         float angleToPlayer = Vector3.SignedAngle(transform.forward, toPlayerDirection, Vector3.up);
 
-        Debug.Log(angleToPlayer.ToString());
+        _actorAnimator.SetFloat(_rotationHash, Mathf.Sign(angleToPlayer));
 
-        StartCoroutine(AnimateRotation(Mathf.Sign(angleToPlayer), angleToPlayer));
-    }
-
-    private IEnumerator AnimateRotation(float direction, float angle)
-    {
-        _actorAnimator.SetFloat(_rotationHash, direction);
-
-        while(angle != 0)
+        transform.DORotate(rotation, 0.5f, RotateMode.Fast).OnComplete(() =>
         {
-            transform.Rotate(Vector3.up, direction * Mathf.Min(150 * Time.deltaTime, Mathf.Abs(angle)));
-            angle -= direction * Mathf.Min(150 * Time.deltaTime, Mathf.Abs(angle));
-
-            yield return null;
-        }
-
-        _actorAnimator.SetFloat(_rotationHash, -1);
+            _previousCamera = Camera.main;
+            Camera.main.gameObject.SetActive(false);
+            _dialogueCamera.gameObject.SetActive(true);
+            Speech();
+            _actorAnimator.SetFloat(_rotationHash, -1);
+        });
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag != "Player") return;
 
-        Speech();
         RotateToPlayer(other.transform);
     }
 
@@ -62,5 +58,8 @@ public class InteractableActor : MonoBehaviour
     {
         transform.rotation = _initialRotation;
         _actorAnimator.SetBool(_dialogueIdleHash, false);
+
+        _dialogueCamera.gameObject.SetActive(false);
+        _previousCamera.gameObject.SetActive(true);
     }
 }
