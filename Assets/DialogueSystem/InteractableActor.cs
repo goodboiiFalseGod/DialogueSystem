@@ -5,7 +5,6 @@ using DG.Tweening;
 
 public class InteractableActor : MonoBehaviour
 {
-    [SerializeField] private bool _rotatesToPlayer;
     [SerializeField] private Animator _actorAnimator;
     [SerializeField] private Camera _dialogueCamera;
     private Camera _previousCamera;
@@ -45,6 +44,7 @@ public class InteractableActor : MonoBehaviour
             Speech();
             _actorAnimator.SetFloat(_rotationHash, -1);
         });
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -56,8 +56,9 @@ public class InteractableActor : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        transform.rotation = _initialRotation;
         _actorAnimator.SetBool(_dialogueIdleHash, false);
+
+        transform.DORotate(_initialRotation.eulerAngles, 0.5f, RotateMode.Fast);
 
         _dialogueCamera.gameObject.SetActive(false);
         _previousCamera.gameObject.SetActive(true);
