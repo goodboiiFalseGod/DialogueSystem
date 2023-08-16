@@ -11,6 +11,8 @@ public class InteractableActor : MonoBehaviour
 
     private static int _rotationHash = Animator.StringToHash("Rotation");
     private static int _dialogueIdleHash = Animator.StringToHash("DialogueIdle");
+    private static int _mirrorRotation = Animator.StringToHash("TurnLeft");
+
 
     private Quaternion _initialRotation;
     private bool _speechCooldown = false;
@@ -50,8 +52,8 @@ public class InteractableActor : MonoBehaviour
 
         _actorAnimator.SetBool(_dialogueIdleHash, false);
 
-        _actorAnimator.SetFloat(_rotationHash, 1);
-        transform.DORotate(_initialRotation.eulerAngles, 0.5f, RotateMode.Fast).OnComplete(() => _actorAnimator.SetFloat(_rotationHash, -1));
+        _actorAnimator.SetBool(_rotationHash, !_actorAnimator.GetBool(_mirrorRotation));
+        transform.DORotate(_initialRotation.eulerAngles, 0.5f, RotateMode.Fast).OnComplete(() => _actorAnimator.SetBool(_rotationHash, false));
 
         _dialogueCamera.gameObject.SetActive(false);
         _previousCamera.gameObject.SetActive(true);
@@ -66,7 +68,16 @@ public class InteractableActor : MonoBehaviour
         Vector3 rotation = Quaternion.LookRotation(toPlayerDirection).eulerAngles;
         float angleToPlayer = Vector3.SignedAngle(transform.forward, toPlayerDirection, Vector3.up);
 
-        _actorAnimator.SetFloat(_rotationHash, 1);
+        if(angleToPlayer > 0)
+        {
+            _actorAnimator.SetBool(_mirrorRotation, true);
+        }
+        else
+        {
+            _actorAnimator.SetBool(_mirrorRotation, false);
+        }
+
+        _actorAnimator.SetBool(_rotationHash, true);
 
         transform.DORotate(rotation, 0.5f, RotateMode.Fast).OnComplete(() =>
         {
@@ -74,7 +85,7 @@ public class InteractableActor : MonoBehaviour
             Camera.main.gameObject.SetActive(false);
             _dialogueCamera.gameObject.SetActive(true);
             Speech();
-            _actorAnimator.SetFloat(_rotationHash, -1);
+            _actorAnimator.SetBool(_rotationHash, false);
         });
 
     }

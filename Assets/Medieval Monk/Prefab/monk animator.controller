@@ -8,7 +8,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 3
+  - m_ConditionMode: 1
     m_ConditionEvent: Rotation
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
@@ -75,7 +75,7 @@ AnimatorState:
   m_Motion: {fileID: -203655887218126122, guid: 10c513b55b1f68340a1dffe52790fdb8, type: 3}
   m_Tag: 
   m_SpeedParameter: 
-  m_MirrorParameter: 
+  m_MirrorParameter: TurnLeft
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1102 &-6390833975208304948
@@ -199,7 +199,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 4
+  - m_ConditionMode: 2
     m_ConditionEvent: Rotation
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
@@ -278,13 +278,19 @@ AnimatorController:
   m_Name: monk animator
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Rotation
-    m_Type: 1
-    m_DefaultFloat: -1
+  - m_Name: TurnLeft
+    m_Type: 4
+    m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: DialogueIdle
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: Rotation
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -311,7 +317,7 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 4
+  - m_ConditionMode: 2
     m_ConditionEvent: Rotation
     m_EventTreshold: 0
   - m_ConditionMode: 1
@@ -380,9 +386,6 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 5672710873110041053}
     m_Position: {x: 360, y: -50, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -6390833975208304948}
-    m_Position: {x: 650, y: -10, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

@@ -111,7 +111,7 @@ public class DialogueWindow : MonoBehaviour
             i++;
             yield return new WaitUntil(() => Input.GetKeyUp(KeyCode.Space));
 
-            if (i < answers.Length)
+            if (i != answers.Length)
             {
                 _answerText.text = answers[i];
             }
