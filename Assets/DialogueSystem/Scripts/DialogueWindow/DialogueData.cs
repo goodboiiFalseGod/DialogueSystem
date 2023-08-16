@@ -14,6 +14,13 @@ public class DialogueData : ScriptableObject
     {
         [SerializeField] public bool OneTimeQuestion = false;
         [SerializeField] public string Question;
-        [SerializeField] public string[] Answer;
+        [SerializeField] public TextAudioPair[] Answer;
+    }
+
+    [Serializable]
+    public class TextAudioPair
+    {
+        [SerializeField] public string TextLine;
+        [SerializeField] public AudioClip VoiceLine;
     }
 }

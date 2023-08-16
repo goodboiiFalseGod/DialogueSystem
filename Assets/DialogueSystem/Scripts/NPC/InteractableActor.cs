@@ -7,6 +7,7 @@ public class InteractableActor : MonoBehaviour
     [SerializeField] private Animator _actorAnimator;
     [SerializeField] private Camera _dialogueCamera;
     [SerializeField] private DialogueData _dialogueData;
+    [SerializeField] private AudioSource _audioSource;
     private Camera _previousCamera;
 
     private static int _rotationHash = Animator.StringToHash("Rotation");
@@ -16,6 +17,8 @@ public class InteractableActor : MonoBehaviour
 
     private Quaternion _initialRotation;
     private bool _speechCooldown = false;
+
+    public AudioSource AudioSource => _audioSource;
 
     private void Awake()
     {

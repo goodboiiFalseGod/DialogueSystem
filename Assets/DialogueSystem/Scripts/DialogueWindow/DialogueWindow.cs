@@ -59,6 +59,8 @@ public class DialogueWindow : MonoBehaviour
             if (_currentActor == null) return;
 
             _currentActor.ExitDialogue();
+            _questionsSection.SetActive(true);
+            _answerText.gameObject.SetActive(false);
         });
     }
 
@@ -89,7 +91,7 @@ public class DialogueWindow : MonoBehaviour
         for(int i = 0; i < questionAnswerPairs.Length; i++)
         {
             _dialogueQuestionsButtons[i].gameObject.SetActive(true);
-            _dialogueQuestionsButtons[i].AssignQuestionAnswerPair(questionAnswerPairs[i]);
+            _dialogueQuestionsButtons[i].AssignQuestionAnswerPair(questionAnswerPairs[i], i + 1);
         }
     }
 
@@ -98,13 +100,15 @@ public class DialogueWindow : MonoBehaviour
         StartCoroutine(ShowAnswer(questionAnswerPair.Answer));
     }
 
-    public IEnumerator ShowAnswer(string[] answers)
+    public IEnumerator ShowAnswer(TextAudioPair[] answers)
     {
         _questionsSection.SetActive(false);
         _answerText.gameObject.SetActive(true);
 
         int i = 0;
-        _answerText.text = answers[i];
+        _answerText.text = answers[i].TextLine;
+        _currentActor.AudioSource.clip = answers[i].VoiceLine;
+        _currentActor.AudioSource.Play();
 
         do
         {
@@ -113,7 +117,9 @@ public class DialogueWindow : MonoBehaviour
 
             if (i != answers.Length)
             {
-                _answerText.text = answers[i];
+                _currentActor.AudioSource.clip = answers[i].VoiceLine;
+                _currentActor.AudioSource.Play();
+                _answerText.text = answers[i].TextLine;
             }
 
             yield return null;

@@ -17,10 +17,10 @@ public class DialogueQuestionButton : MonoBehaviour
         _button.onClick.AddListener(OnClick);
     }
 
-    public void AssignQuestionAnswerPair(QuestionAnswerPair questionAnswer)
+    public void AssignQuestionAnswerPair(QuestionAnswerPair questionAnswer, int number)
     {
         _currentPair = questionAnswer;
-        _questionText.text = _currentPair.Question;
+        _questionText.text = number.ToString() + ". " + _currentPair.Question;
     }
 
     private void OnClick()
