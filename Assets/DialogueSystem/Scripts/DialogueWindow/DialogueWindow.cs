@@ -9,14 +9,22 @@ using static DialogueData;
 
 public class DialogueWindow : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _npcNameText;
-    [SerializeField] private Transform _questionsRoot;
-    [SerializeField] private DialogueQuestion _dialogueQuestionPrefab;
     [SerializeField] private RectTransform _rectTransform;
+
     [SerializeField] private IL3DN_SimpleFPSController _player;
+
+    [SerializeField] private TextMeshProUGUI _npcNameText;
+
+    [SerializeField] private TextMeshProUGUI _answerText;
+    [SerializeField] private GameObject _questionsSection;
+
+    [SerializeField] private Transform _questionsRoot;
+
     [SerializeField] private Button _exitButton;
 
-    private List<DialogueQuestion> _dialogueQuestionsButtons;
+    [SerializeField] private DialogueQuestionButton _dialogueQuestionPrefab;
+
+    private List<DialogueQuestionButton> _dialogueQuestionsButtons;
     private InteractableActor _currentActor;
 
     public static DialogueWindow Instance => _dialogueWindowInstance;
@@ -28,11 +36,11 @@ public class DialogueWindow : MonoBehaviour
     {
         Hide(0f);
         _dialogueWindowInstance = this;
-        _dialogueQuestionsButtons = new List<DialogueQuestion>();
+        _dialogueQuestionsButtons = new List<DialogueQuestionButton>();
 
         for (int i = 0; i < 3; i++)
         {
-            _dialogueQuestionsButtons.Add(Instantiate(_dialogueQuestionPrefab, _questionsRoot));
+            InstantiateQuestionButton();
         }
 
         _exitButton.onClick.AddListener(() => Hide(0.2f));
@@ -74,7 +82,7 @@ public class DialogueWindow : MonoBehaviour
         {
             for (int i = 0; i < questionAnswerPairs.Length - _dialogueQuestionsButtons.Count; i++)
             {
-                _dialogueQuestionsButtons.Add(Instantiate(_dialogueQuestionPrefab, _questionsRoot));
+                InstantiateQuestionButton();
             }
         }
 
@@ -83,5 +91,43 @@ public class DialogueWindow : MonoBehaviour
             _dialogueQuestionsButtons[i].gameObject.SetActive(true);
             _dialogueQuestionsButtons[i].AssignQuestionAnswerPair(questionAnswerPairs[i]);
         }
+    }
+
+    public void QuestionClicked(QuestionAnswerPair questionAnswerPair)
+    {
+        StartCoroutine(ShowAnswer(questionAnswerPair.Answer));
+    }
+
+    public IEnumerator ShowAnswer(string[] answers)
+    {
+        _questionsSection.SetActive(false);
+        _answerText.gameObject.SetActive(true);
+
+        int i = 0;
+        _answerText.text = answers[i];
+
+        do
+        {
+            i++;
+            yield return new WaitUntil(() => Input.GetKeyUp(KeyCode.Space));
+
+            if (i < answers.Length)
+            {
+                _answerText.text = answers[i];
+            }
+
+            yield return null;
+
+        } while (i < answers.Length);
+
+        _questionsSection.SetActive(true);
+        _answerText.gameObject.SetActive(false);
+    }
+
+    private void InstantiateQuestionButton()
+    {
+        DialogueQuestionButton question = Instantiate(_dialogueQuestionPrefab, _questionsRoot);
+        _dialogueQuestionsButtons.Add(question);
+        question.Init(this);
     }
 }
