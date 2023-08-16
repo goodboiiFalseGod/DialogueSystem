@@ -26,6 +26,7 @@ public class DialogueWindow : MonoBehaviour
 
     private void Awake()
     {
+        Hide(0f);
         _dialogueWindowInstance = this;
         _dialogueQuestionsButtons = new List<DialogueQuestion>();
 
@@ -35,12 +36,11 @@ public class DialogueWindow : MonoBehaviour
         }
 
         _exitButton.onClick.AddListener(() => Hide(0.2f));
-        Hide(0f);
     }
 
     public void Hide(float time)
     {
-        _rectTransform.DOScale(0, 0.3f).OnComplete(() => 
+        _rectTransform.DOScale(0, time).OnComplete(() => 
         {
             foreach (var answer in _dialogueQuestionsButtons)
             {

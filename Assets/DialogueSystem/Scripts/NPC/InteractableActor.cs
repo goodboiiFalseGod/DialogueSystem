@@ -30,7 +30,6 @@ public class InteractableActor : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         ExitDialogue();
-
         _speechCooldown = false;
     }
 
@@ -42,7 +41,10 @@ public class InteractableActor : MonoBehaviour
 
     public void ExitDialogue()
     {
-        if (_speechCooldown) return;
+        if (_speechCooldown)
+        {
+            return;
+        }
 
         _speechCooldown = true;
 
@@ -53,7 +55,6 @@ public class InteractableActor : MonoBehaviour
 
         _dialogueCamera.gameObject.SetActive(false);
         _previousCamera.gameObject.SetActive(true);
-        DialogueWindow.Instance.Hide(0.2f);
     }
 
     private void RotateToPlayer(Transform playerTransform)
